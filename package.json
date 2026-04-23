@@ -1,0 +1,43 @@
+{
+  "name": "agentku",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "ajv": "^8.18.0",
+    "axios": "^1.15.1",
+    "boxen": "^8.0.1",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.4.2",
+    "gradient-string": "^3.0.0",
+    "log-symbols": "^7.0.1",
+    "mic": "^2.1.2",
+    "node-fetch": "^3.3.2",
+    "node-record-lpcm16": "^1.0.1",
+    "node-telegram-bot-api": "^0.67.0",
+    "node-webcam": "^0.8.2",
+    "openai": "^6.34.0",
+    "ora": "^9.3.0",
+    "play-sound": "^1.1.6",
+    "pptxgenjs": "^4.0.1",
+    "puppeteer": "^24.42.0",
+    "puppeteer-core": "^24.42.0",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2",
+    "sound-play": "^1.1.0",
+    "uuid": "^14.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.10",
+    "tailwindcss": "^4.2.2"
+  }
+}

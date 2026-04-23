@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice to AI Agent</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f4f4f4; }
+        .container { text-align: center; background-color: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        h1 { color: #333; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; color: white; }
+        #startButton { background-color: #4CAF50; }
+        #stopButton { background-color: #f44336; }
+        #status { margin-top: 20px; color: #555; }
+        #transcript { margin-top: 20px; border: 1px solid #ccc; padding: 15px; min-height: 100px; text-align: left; border-radius: 5px; background-color: #f9f9f9; }
+        #aiResponse { margin-top: 15px; border: 1px solid #cce5ff; padding: 15px; min-height: 100px; text-align: left; border-radius: 5px; background-color: #e7f3ff; color: #004085; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Voice to AI Agent</h1>
+        <button id="startButton">Start Conversation</button>
+        <button id="stopButton" disabled>End Conversation</button>
+        <div id="status">Status: Disconnected</div>
+        <div id="transcript"><strong>You:</strong><br></div>
+        <div id="aiResponse"><strong>AI Agent:</strong><br></div>
+    </div>
+
+    <script>
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+        const statusDiv = document.getElementById('status');
+        const transcriptDiv = document.getElementById('transcript');
+        const aiResponseDiv = document.getElementById('aiResponse');
+
+        let recognition;
+        let ws;
+        let isRecording = false;
+
+        // Function to initialize WebSocket connection
+        function connectWebSocket() {
+            ws = new WebSocket('ws://localhost:3000'); // Use your server address
+
+            ws.onopen = () => {
+                console.log('WebSocket connection established');
+                statusDiv.textContent = 'Status: Connected';
+                startButton.disabled = false;
+                stopButton.disabled = true;
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log('Message from server:', data);
+
+                if (data.type === 'connectionStatus') {
+                    statusDiv.textContent = `Status: ${data.message}`;
+                } else if (data.type === 'aiResponse') {
+                    aiResponseDiv.innerHTML += `<p>${data.text}</p>`;
+                    // If you have TTS, you'd play the response here
+                    // speakResponse(data.text);
+                } else if (data.type === 'error') {
+                    statusDiv.textContent = `Status: Error - ${data.message}`;
+                }
+            };
+
+            ws.onclose = () => {
+                console.log('WebSocket connection closed');
+                statusDiv.textContent = 'Status: Disconnected';
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                isRecording = false;
+                if (recognition) {
+                    recognition.stop();
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                statusDiv.textContent = 'Status: WebSocket Error';
+            };
+        }
+
+        // Initialize WebSocket connection on page load
+        connectWebSocket();
+
+        // Function to start speech recognition
+        function startSpeechRecognition() {
+            if (!('webkitSpeechRecognition' in window)) {
+                alert('Your browser does not support Speech Recognition. Please use Chrome.');
+                return;
+            }
+
+            recognition = new webkitSpeechRecognition();
+            recognition.continuous = true; // Listen continuously
+            recognition.interimResults = true; // Get interim results
+            recognition.lang = 'en-US'; // Set language
+
+            recognition.onstart = () => {
+                console.log('Speech recognition started');
+                isRecording = true;
+                startButton.disabled = true;
+                stopButton.disabled = false;
+                statusDiv.textContent = 'Status: Listening...';
+            };
+
+            recognition.onresult = (event) => {
+                let interimTranscript = '';
+                let finalTranscript = '';
+
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const transcript = event.results[i][0].transcript;
+                    if (event.results[i].isFinal) {
+                        finalTranscript += transcript;
+                    } else {
+                        interimTranscript += transcript;
+                    }
+                }
+
+                if (finalTranscript) {
+                    transcriptDiv.innerHTML += `<p><strong>You:</strong> ${finalTranscript}</p>`;
+                    // Send the final recognized text to the server
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        ws.send(JSON.stringify({ type: 'textMessage', text: finalTranscript }));
+                    } else {
+                        console.error('WebSocket is not open. Cannot send message.');
+                    }
+                }
+
+                // Optionally display interim results for better UX
+                // You might want to clear and re-display interim results
+                // For simplicity, we'll just append final results here.
+            };
+
+            recognition.onerror = (event) => {
+                console.error('Speech recognition error:', event.error);
+                statusDiv.textContent = `Status: Recognition Error - ${event.error}`;
+                isRecording = false;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+            };
+
+            recognition.onend = () => {
+                console.log('Speech recognition ended');
+                // If we ended due to stop button, we don't restart
+                // If it's an unexpected end, you might want to attempt to restart
+                if (isRecording) {
+                    // This part might need adjustment if you want continuous listening
+                    // For now, we stop listening when the user clicks Stop
+                }
+            };
+
+            recognition.start();
+        }
+
+        // Function to stop speech recognition
+        function stopSpeechRecognition() {
+            if (recognition) {
+                recognition.stop();
+                isRecording = false;
+                startButton.disabled = false;
+                stopButton.disabled = true;
+                statusDiv.textContent = 'Status: Stopped';
+            }
+        }
+
+        // Event listeners for buttons
+        startButton.addEventListener('click', () => {
+            if (!ws || ws.readyState === WebSocket.CLOSED) {
+                connectWebSocket(); // Reconnect if not connected
+            }
+            startSpeechRecognition();
+        });
+
+        stopButton.addEventListener('click', () => {
+            stopSpeechRecognition();
+        });
+
+        // Optional: Function to speak the AI response using browser's TTS
+        function speakResponse(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                // You can customize voice, pitch, rate here
+                // utterance.voice = voices[0]; // Example: use the first available voice
+                // utterance.pitch = 1;
+                // utterance.rate = 1;
+                speechSynthesis.speak(utterance);
+            } else {
+                console.warn('Browser does not support Text-to-Speech.');
+            }
+        }
+
+        // Handle closing the connection when the user leaves the page
+        window.addEventListener('beforeunload', () => {
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.close();
+            }
+        });
+
+    </script>
+</body>
+</html>

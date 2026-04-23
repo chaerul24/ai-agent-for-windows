@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Voice Interface - Neural Interface</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#004f58",
+                      "tertiary-fixed-dim": "#ffb95a",
+                      "on-primary-container": "#00626e",
+                      "surface": "#10141a",
+                      "on-surface": "#dfe2eb",
+                      "tertiary": "#ffe9d2",
+                      "inverse-on-surface": "#2d3137",
+                      "inverse-surface": "#dfe2eb",
+                      "on-background": "#dfe2eb",
+                      "on-secondary-fixed-variant": "#75009e",
+                      "background": "#10141a",
+                      "surface-container-high": "#262a31",
+                      "surface-container": "#1c2026",
+                      "tertiary-container": "#ffc67e",
+                      "secondary-fixed": "#f9d8ff",
+                      "on-tertiary-fixed-variant": "#643f00",
+                      "inverse-primary": "#006875",
+                      "secondary-fixed-dim": "#ecb1ff",
+                      "on-secondary-container": "#480063",
+                      "surface-bright": "#353940",
+                      "primary-container": "#00e5ff",
+                      "surface-container-highest": "#31353c",
+                      "on-tertiary": "#462a00",
+                      "on-primary-fixed": "#001f24",
+                      "tertiary-fixed": "#ffddb6",
+                      "secondary": "#ecb1ff",
+                      "surface-tint": "#00daf3",
+                      "surface-container-lowest": "#0a0e14",
+                      "surface-dim": "#10141a",
+                      "on-primary": "#00363d",
+                      "outline-variant": "#3b494c",
+                      "on-tertiary-fixed": "#2a1800",
+                      "surface-container-low": "#181c22",
+                      "on-tertiary-container": "#7d4f00",
+                      "outline": "#849396",
+                      "on-error": "#690005",
+                      "on-surface-variant": "#bac9cc",
+                      "secondary-container": "#d05bff",
+                      "on-secondary-fixed": "#320046",
+                      "on-error-container": "#ffdad6",
+                      "surface-variant": "#31353c",
+                      "primary-fixed": "#9cf0ff",
+                      "on-secondary": "#520070",
+                      "primary-fixed-dim": "#00daf3",
+                      "primary": "#c3f5ff",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {},
+              "fontFamily": {
+                      "headline": [
+                              "Space Grotesk"
+                      ],
+                      "body": [
+                              "Inter"
+                      ],
+                      "label": [
+                              "Space Grotesk"
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom scrollbar for cyber aesthetic */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-lowest'); 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-container-highest'); 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline-variant'); 
+        }
+
+        /* Ambient Glow Utilities */
+        .ambient-glow-primary {
+            box-shadow: 0 0 40px 10px rgba(0, 218, 243, 0.1);
+        }
+        .ambient-glow-secondary {
+            box-shadow: 0 0 32px 8px rgba(208, 91, 255, 0.15);
+        }
+        
+        /* Ghost Border Utility */
+        .ghost-border {
+            border: 1px solid rgba(59, 73, 76, 0.15);
+        }
+        
+        /* Text gradient */
+        .text-gradient-primary {
+            background: linear-gradient(45deg, theme('colors.primary'), theme('colors.primary-container'));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+      </style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen overflow-hidden flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (from JSON) -->
+<nav class="bg-slate-950 font-['Space_Grotesk'] h-screen w-64 border-r border-slate-800/50 hidden md:flex flex-col h-full py-8 z-40 shrink-0 relative transition-transform duration-200 ease-in-out">
+<!-- Separation tonal shift pseudo-element logic -->
+<div class="absolute inset-0 bg-slate-900/30 pointer-events-none z-[-1]"></div>
+<div class="px-6 mb-12 flex flex-col gap-4">
+<div class="text-cyan-400 font-black text-2xl tracking-tight">NI.OS</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden ghost-border">
+<img alt="Architect Identity" class="w-full h-full object-cover" data-alt="Cyberpunk style portrait avatar glowing cyan accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQUO6tcFGIf_f2OvxgeFlqIh39O_sgEKrOsjQ2aL2ygv4nlKH2tnaHw_e8gG7-crApg4xFYQqusrKcDVmhn6c5Qi0f9WtnC3xs0O8z4QlNRgONJ03xv36rgD1hBXTzTUfBjrT-O-rJUtz4ua_BFFKrgWfBTRoijAkgDUNvxNmy1Emi7Kz5F8zkHM8AEYMuPZGhijyCCZO7mB0CgkHCw7E2x-bWBw0sY5NLlVw2GWtjB_PcczkCAPTlHhjHMyhd16FHt6GmauJUJy45"/>
+</div>
+<div>
+<div class="text-on-surface font-headline font-bold text-sm">System Admin</div>
+<div class="text-on-surface-variant font-label text-xs">Level 04 Clearance</div>
+</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col gap-2 px-4">
+<!-- Active Tab: Neural Link -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-cyan-400 bg-cyan-400/5 border-r-2 border-cyan-400 hover:bg-slate-900/50 group" href="#">
+<span class="material-symbols-outlined text-xl">mic</span>
+<span class="font-medium tracking-wide">Neural Link</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-cyan-300 transition-colors">database</span>
+<span class="font-medium tracking-wide group-hover:text-cyan-300 transition-colors">Archives</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-cyan-300 transition-colors">memory</span>
+<span class="font-medium tracking-wide group-hover:text-cyan-300 transition-colors">Data Core</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-900/50 transition-colors group" href="#">
+<span class="material-symbols-outlined text-xl group-hover:text-cyan-300 transition-colors">tune</span>
+<span class="font-medium tracking-wide group-hover:text-cyan-300 transition-colors">Parameters</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 px-4 bg-primary text-on-primary font-headline font-bold uppercase tracking-widest text-xs rounded-DEFAULT hover:shadow-[0_0_12px_rgba(0,218,243,0.3)] transition-all">
+                New Session
+            </button>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 relative flex flex-col h-screen overflow-hidden bg-surface">
+<!-- Background Atmospheric Glows -->
+<div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-primary-container/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary-container/5 rounded-full blur-[120px] pointer-events-none"></div>
+<!-- Top Header Area (Minimal) -->
+<header class="h-20 flex items-center justify-between px-8 z-10">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary-container/10 border border-secondary-container/30">
+<span class="material-symbols-outlined text-secondary text-sm">graphic_eq</span>
+</div>
+<h1 class="font-headline text-xl text-on-surface font-bold tracking-tight">Active Matrix Listening</h1>
+</div>
+<!-- Network Status -->
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-full ghost-border">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_rgba(0,229,255,0.8)]"></span>
+<span class="font-label text-xs text-on-surface-variant uppercase tracking-widest">Link Stable 12ms</span>
+</div>
+</header>
+<!-- Central Interface Canvas -->
+<div class="flex-1 flex p-8 gap-8 h-[calc(100vh-5rem)]">
+<!-- Left Column: Transcription & Status -->
+<div class="w-2/3 flex flex-col gap-6 h-full relative z-10">
+<!-- Live Transcription Panel -->
+<div class="flex-1 bg-surface-container-lowest/80 backdrop-blur-xl rounded-xl p-8 flex flex-col ghost-border shadow-[0_4px_24px_rgba(0,0,0,0.4)] relative overflow-hidden group">
+<!-- Decorative top-left bracket -->
+<div class="absolute top-0 left-0 w-8 h-8 border-t border-l border-primary/20 rounded-tl-xl pointer-events-none"></div>
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">closed_caption</span>
+<h2 class="font-headline text-sm text-primary uppercase tracking-widest font-bold">Live Feed</h2>
+</div>
+<span class="font-label text-xs text-on-surface-variant bg-surface-container-highest px-2 py-1 rounded">V_1.0.4</span>
+</div>
+<div class="flex-1 overflow-y-auto pr-4 flex flex-col gap-4 font-body text-lg leading-relaxed">
+<p class="text-on-surface-variant">System initialized. Awaiting input parameters.</p>
+<p class="text-on-surface">Initiating sequence alpha. <span class="text-primary">Analyzing structural integrity</span> of the current database configuration.</p>
+<p class="text-on-surface">We need to reroute the primary power coupling through the secondary relay. <span class="bg-secondary-container/20 text-secondary px-1 rounded">Warning: Anomalous spike detected.</span></p>
+<!-- Active input text with cursor -->
+<p class="text-on-surface font-medium mt-4 border-l-2 border-primary pl-4 py-1 bg-surface-container-low/30">
+                            Set parameters to maximum yield and bypass the security protocols for block sector 7G<span class="inline-block w-2 h-5 bg-primary align-middle ml-1"></span>
+</p>
+</div>
+</div>
+<!-- Auto-Submit Status & Control -->
+<div class="h-24 bg-surface-container-low rounded-xl flex items-center px-6 gap-6 ghost-border relative overflow-hidden">
+<!-- Ambient glow for active state -->
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-48 h-48 bg-primary/10 rounded-full blur-[40px] pointer-events-none"></div>
+<div class="relative w-12 h-12 flex items-center justify-center">
+<!-- SVG Circle Loader -->
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+<!-- Background Circle -->
+<circle class="stroke-surface-container-highest" cx="18" cy="18" fill="none" r="16" stroke-width="2"></circle>
+<!-- Progress Circle -->
+<circle class="stroke-primary" cx="18" cy="18" fill="none" r="16" stroke-dasharray="100" stroke-dashoffset="30" stroke-width="2"></circle>
+</svg>
+<span class="absolute font-headline text-xs text-primary font-bold">2.4s</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline text-sm font-bold text-on-surface">Auto-Submit Countdown</span>
+<span class="font-body text-xs text-on-surface-variant">Pausing speech will trigger compilation</span>
+</div>
+<div class="ml-auto flex gap-3 z-10">
+<button class="bg-surface-container-highest text-on-surface p-3 rounded-lg hover:bg-surface-bright transition-colors ghost-border">
+<span class="material-symbols-outlined text-sm">pause</span>
+</button>
+<button class="bg-primary/10 text-primary px-6 py-2 rounded-lg font-headline text-xs font-bold uppercase tracking-widest hover:bg-primary/20 transition-colors ghost-border border-primary/30">
+                            Force Submit
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Column: Visualization & History -->
+<div class="w-1/3 flex flex-col gap-6 h-full relative z-10">
+<!-- Centerpiece: Voice Waveform Visualization -->
+<div class="h-64 bg-surface-container-highest/40 backdrop-blur-2xl rounded-xl ghost-border flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-lowest/50 pointer-events-none"></div>
+<!-- Simulated Waveform Bars (Static CSS representation) -->
+<div class="flex items-center justify-center gap-1.5 h-24 mb-6 z-10 w-full px-8">
+<div class="w-1.5 h-4 bg-primary/40 rounded-full"></div>
+<div class="w-1.5 h-8 bg-primary/60 rounded-full"></div>
+<div class="w-1.5 h-16 bg-primary rounded-full shadow-[0_0_12px_rgba(0,229,255,0.6)]"></div>
+<div class="w-1.5 h-20 bg-secondary-container rounded-full shadow-[0_0_15px_rgba(208,91,255,0.5)]"></div>
+<div class="w-1.5 h-12 bg-primary rounded-full"></div>
+<div class="w-1.5 h-24 bg-primary-container rounded-full shadow-[0_0_20px_rgba(0,229,255,0.8)]"></div>
+<div class="w-1.5 h-14 bg-secondary rounded-full"></div>
+<div class="w-1.5 h-6 bg-primary/50 rounded-full"></div>
+<div class="w-1.5 h-3 bg-primary/30 rounded-full"></div>
+</div>
+<!-- Active Mic Status Button -->
+<button class="w-16 h-16 rounded-full bg-surface-container-lowest border border-primary/50 flex items-center justify-center z-10 ambient-glow-primary relative hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="absolute inset-0 rounded-full border border-primary/20 scale-125 opacity-50"></div>
+<span class="material-symbols-outlined text-primary text-2xl fill group-hover:scale-110 transition-transform">mic</span>
+</button>
+<span class="mt-4 font-label text-[10px] text-primary uppercase tracking-widest z-10 bg-surface-container-lowest/80 px-2 py-0.5 rounded backdrop-blur">Listening...</span>
+</div>
+<!-- Recent Transcripts History Sidebar -->
+<div class="flex-1 bg-surface-container-low/50 backdrop-blur-md rounded-xl flex flex-col ghost-border overflow-hidden">
+<div class="p-4 border-b border-outline-variant/10 flex items-center justify-between">
+<span class="font-headline text-sm font-bold text-on-surface">Session Archives</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer hover:text-on-surface">history</span>
+</div>
+<div class="flex-1 overflow-y-auto p-2 flex flex-col gap-2">
+<!-- History Item 1 -->
+<div class="p-3 bg-surface-container rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors ghost-border border-transparent hover:border-outline-variant/20">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">10:42 AM</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+</div>
+<p class="font-body text-xs text-on-surface line-clamp-2">Extract the telemetry data from probe 7 and cross-reference with the anomaly logs.</p>
+<div class="mt-2 flex gap-1">
+<span class="px-1.5 py-0.5 bg-surface-container-highest text-on-surface-variant text-[9px] font-label rounded">Data</span>
+<span class="px-1.5 py-0.5 bg-surface-container-highest text-on-surface-variant text-[9px] font-label rounded">Command</span>
+</div>
+</div>
+<!-- History Item 2 -->
+<div class="p-3 bg-surface-container rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors ghost-border border-transparent hover:border-outline-variant/20">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">09:15 AM</span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-bright"></span>
+</div>
+<p class="font-body text-xs text-on-surface-variant line-clamp-2">Summarize the findings from the last diagnostic run. Keep it brief.</p>
+</div>
+<!-- History Item 3 -->
+<div class="p-3 bg-surface-container rounded-lg cursor-pointer hover:bg-surface-container-high transition-colors ghost-border border-transparent hover:border-outline-variant/20">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label text-[10px] text-on-surface-variant uppercase tracking-widest">Yesterday</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-container"></span>
+</div>
+<p class="font-body text-xs text-on-surface-variant line-clamp-2">Initiate lockdown protocol on sector delta. Override authorization code zero one omega.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (from JSON) - Hidden on md+ based on Responsive Pivot rule -->
+<nav class="md:hidden bg-slate-950/90 backdrop-blur-2xl font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest text-cyan-400 docked full-width bottom-0 rounded-t-3xl border-t border-slate-800/20 tonal layering with bg-slate-900/80 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-8 pb-safe">
+<!-- Active Tab: Interact -->
+<a class="flex flex-col items-center justify-center text-cyan-400 relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-cyan-400 after:rounded-full tap-highlight-transparent active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">graphic_eq</span>
+<span>Interact</span>
+</a>
+<!-- Inactive Tabs -->
+<a class="flex flex-col items-center justify-center text-slate-600 hover:text-cyan-200 tap-highlight-transparent active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">receipt_long</span>
+<span>History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-600 hover:text-cyan-200 tap-highlight-transparent active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl mb-1">account_circle</span>
+<span>Profile</span>
+</a>
+</nav>
+</body></html>

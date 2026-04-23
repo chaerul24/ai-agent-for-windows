@@ -1,0 +1,24 @@
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+
+# logs
+*.log
+
+# build / temp
+temp/
+dist/
+build/
+
+# browser/session
+chrome-profile/
+
+# runtime / generated data
+memory.json
+
+# OS
+.DS_Store
+Thumbs.db
