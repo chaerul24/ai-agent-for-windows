@@ -148,10 +148,13 @@ GEMINI_API_KEY=YOUR_API_KEY
 
 ---
 
-# ▶️ Cara Menjalankan
+# Dicoding Ai Agent
+ai agent mengerjakan soal anda di dicoding anda hanya duduk manis saja.
 
 ```bash id="run"
-node sandbox.js https://www.dicoding.com/academies/xxx/tutorials/xxx
+kerjakan soal dicoding https://www.dicoding.com/academies/xxx/tutorials/xxx
+kerjakan https://www.dicoding.com/academies/xxx/tutorials/xxx
+https://www.dicoding.com/academies/xxx/tutorials/xxx
 ```
 
 ---
@@ -166,14 +169,16 @@ core/
  │    ├── dicoding.js       # Flow utama
  │    ├── soal.js           # Solver logic
  │    ├── drag.js           # Drag & drop
- │    ├── warning.js
+ │    ├── warning.js        # detection textarea
  │    ├── captcha.js
+ │    ├── textarea.js
  │
- ├── textarea.js            # AI coding multi-file
  ├── browserChrome.js       # Chrome launcher
  ├── browserSolver.js       # Entry browser
  │
-sandbox.js                  # Runner utama
+index.js                    # Runner utama
+aturan.txt                  # rules ai agent
+.env
 ```
 
 ---
