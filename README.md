@@ -1,53 +1,41 @@
-# 🤖 WhatsApp AI Agent + Dicoding Auto Solver
+# 🤖 Dicoding Auto Solver (AI Agent)
 
-Automation tool berbasis **Node.js + Puppeteer + AI (Gemini)** untuk:
+Automation tool berbasis **Node.js + Puppeteer + AI (Gemini)** untuk membantu menyelesaikan:
 
-* 💬 Auto reply WhatsApp (AI agent)
-* 🎓 Auto solve Dicoding (materi, quiz, coding)
-* 🧠 Multi-mode AI (chat, coding, dataset)
+* 📘 Materi Dicoding
+* 💻 Code Runner (coding exercise)
+* 🧠 Quiz / pilihan ganda
+* 📝 Textarea (essay)
+* 🔐 CAPTCHA (manual handling)
 
 ---
 
 # 🚀 Fitur Utama
 
-## 📱 WhatsApp AI Agent
-
-* Auto reply pesan masuk
-* Gaya natural (Gen Z, santai, kontekstual)
-* Mode otomatis:
-
-  * 💖 Romantic (detect: sayang, syng, ayang)
-  * 💼 Client (harga, jasa, deal)
-  * 🧠 Smart reply (context-aware)
-* Memory chat (history per user)
-* CLI warna (chalk + spinner)
-
----
-
-## 🎓 Dicoding Auto Solver
-
-### 🧠 AI Smart Solver
+## 🧠 AI Smart Solver
 
 * Membaca konteks soal otomatis
 * Generate jawaban & kode
-* Auto retry jika error
-* Bisa adaptasi dari hasil sebelumnya
+* Support multi-file (contoh: `main.mjs`, `utils.mjs`)
+* Auto retry & auto fix jika error
+* Adaptif (berdasarkan output sebelumnya)
 
 ---
 
-### 💻 Code Runner Automation
+## 💻 Code Runner Automation
 
 * Detect halaman coding (CodeMirror)
-* Isi textarea otomatis (multi-file support)
-* Klik:
+* Isi textarea otomatis
+* Jalankan:
 
-  * ▶️ Jalankan
+  * ▶️ Run
   * 📨 Submit
-* Baca output & retry jika gagal
+* Baca output
+* Auto retry jika gagal
 
 ---
 
-### 📝 Quiz Solver
+## 📝 Quiz Solver
 
 * Support:
 
@@ -59,7 +47,7 @@ Automation tool berbasis **Node.js + Puppeteer + AI (Gemini)** untuk:
 
 ---
 
-### 📝 Textarea Solver (Essay)
+## 📝 Textarea Solver
 
 * Detect textarea otomatis
 * AI generate jawaban
@@ -67,7 +55,7 @@ Automation tool berbasis **Node.js + Puppeteer + AI (Gemini)** untuk:
 
 ---
 
-### 🔗 Smart Page Detection
+## 🔗 Smart Page Detection
 
 Auto detect halaman:
 
@@ -80,10 +68,10 @@ Flow berjalan otomatis tanpa konflik
 
 ---
 
-### 🔐 CAPTCHA Handling
+## 🔐 CAPTCHA Handling
 
 * Detect CAPTCHA otomatis
-* Pause & tunggu user solve manual
+* Pause dan tunggu user solve manual
 
 ---
 
@@ -94,13 +82,13 @@ Flow berjalan otomatis tanpa konflik
 2. Deteksi jenis halaman:
    → Exam
    → Code Runner
-   → Soal
+   → Quiz
    → Textarea
 3. Jalankan AI solver
 4. Jika gagal:
-   → AI perbaiki
-   → Retry
-5. Submit
+   → AI memperbaiki
+   → Retry otomatis
+5. Submit jawaban
 6. Klik Next
 7. Ulang sampai selesai
 ```
@@ -127,18 +115,6 @@ GEMINI_API_KEY=YOUR_API_KEY
 
 # ▶️ Cara Menjalankan
 
-## 📱 WhatsApp Bot
-
-```bash
-node whatsapp.js
-```
-
-Scan QR → bot aktif.
-
----
-
-## 🎓 Dicoding Solver
-
 ```bash
 node sandbox.js https://www.dicoding.com/academies/xxx/tutorials/xxx
 ```
@@ -151,11 +127,6 @@ node sandbox.js https://www.dicoding.com/academies/xxx/tutorials/xxx
 core/
  ├── config.js              # AI Gemini
  │
- ├── whatsapp/
- │    ├── chat.js           # AI auto reply
- │    ├── inbox.js
- │    ├── memory.js
- │
  ├── dicoding/
  │    ├── dicoding.js       # Flow utama
  │    ├── soal.js           # Solver logic
@@ -167,8 +138,7 @@ core/
  ├── browserChrome.js       # Chrome launcher
  ├── browserSolver.js       # Entry browser
  │
-sandbox.js                  # Runner Dicoding
-whatsapp.js                 # Runner WhatsApp
+sandbox.js                  # Runner utama
 ```
 
 ---
@@ -177,9 +147,8 @@ whatsapp.js                 # Runner WhatsApp
 
 * Node.js
 * Puppeteer (Chromium automation)
-* whatsapp-web.js
 * Gemini API (AI streaming)
-* Chalk (CLI color)
+* Chalk (CLI styling)
 * Ora (spinner)
 
 ---
@@ -220,16 +189,13 @@ export ...
   * eksperimen
   * automation pribadi
 
-❌ Jangan digunakan untuk abuse / spam
-
 ---
 
 # 💡 Tips
 
-* Gunakan Chrome profile (biar tidak login ulang)
+* Gunakan Chrome profile untuk menghindari login ulang
 * Hindari headless mode
-* Gunakan delay (sudah otomatis)
-* Jangan terlalu cepat (anti detect)
+* Gunakan delay agar tidak terdeteksi bot
 
 ---
 
@@ -237,9 +203,9 @@ export ...
 
 * [ ] Auto retry sampai 100% benar
 * [ ] AI belajar dari soal sebelumnya
-* [ ] Dataset AI analyzer lebih canggih
+* [ ] Analisis hasil ujian
 * [ ] Anti-detection system upgrade
-* [ ] Formatter kode otomatis
+* [ ] Code formatter (Prettier integration)
 
 ---
 
@@ -259,4 +225,4 @@ Kalau project ini membantu:
 
 ---
 
-# 🚀 Enjoy Automation + AI Agent
+# 🚀 Enjoy AI Automation
