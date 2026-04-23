@@ -75,9 +75,44 @@ Flow berjalan otomatis tanpa konflik
 
 ---
 
+# 🤖 AI Agent Control (Penting)
+
+AI Agent ini dirancang sebagai **automation assistant yang powerful**, dengan kemampuan:
+
+* 🧠 Dapat menjalankan perintah berbasis AI
+* 💻 Berinteraksi langsung dengan browser dan sistem
+* ⚙️ Mengontrol flow automation secara penuh
+
+⚠️ **Catatan penting:**
+
+* AI agent **dapat mengakses komputer anda (melalui automation script)**
+* Namun **ANDA tetap memiliki kendali penuh atas sistem**
+* Semua aksi terjadi berdasarkan script yang anda jalankan
+
+---
+
+## 🔊 Future Feature (Coming Soon)
+
+🚀 Pengembangan selanjutnya:
+
+* 🎙️ Voice to Command
+* 🧠 Voice → AI → Execute
+* 💻 Kontrol komputer melalui suara
+
+Contoh:
+
+```text id="voice-example"
+"buka dicoding dan kerjakan soal"
+→ AI memahami
+→ browser terbuka
+→ solver berjalan otomatis
+```
+
+---
+
 # 🧠 Cara Kerja
 
-```text
+```text id="flow-main"
 1. Buka halaman Dicoding
 2. Deteksi jenis halaman:
    → Exam
@@ -97,7 +132,7 @@ Flow berjalan otomatis tanpa konflik
 
 # 📦 Instalasi
 
-```bash
+```bash id="install"
 npm install
 ```
 
@@ -107,7 +142,7 @@ npm install
 
 Buat file `.env`:
 
-```env
+```env id="env"
 GEMINI_API_KEY=YOUR_API_KEY
 ```
 
@@ -115,7 +150,7 @@ GEMINI_API_KEY=YOUR_API_KEY
 
 # ▶️ Cara Menjalankan
 
-```bash
+```bash id="run"
 node sandbox.js https://www.dicoding.com/academies/xxx/tutorials/xxx
 ```
 
@@ -123,7 +158,7 @@ node sandbox.js https://www.dicoding.com/academies/xxx/tutorials/xxx
 
 # 📁 Struktur Project
 
-```bash
+```bash id="structure"
 core/
  ├── config.js              # AI Gemini
  │
@@ -155,7 +190,7 @@ sandbox.js                  # Runner utama
 
 # 🧪 Contoh Output
 
-```text
+```text id="output"
 🧠 AI Smart Solver start...
 📄 Context length: 1200
 📁 Total file: 2
@@ -205,6 +240,7 @@ export ...
 * [ ] AI belajar dari soal sebelumnya
 * [ ] Analisis hasil ujian
 * [ ] Anti-detection system upgrade
+* [ ] Voice command execution
 * [ ] Code formatter (Prettier integration)
 
 ---
